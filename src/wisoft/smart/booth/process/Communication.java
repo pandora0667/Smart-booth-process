@@ -11,8 +11,12 @@ import java.nio.charset.Charset;
 public class Communication {
   private SocketChannel socketChannel;
   private Charset charset;
+  private  Median boothMedian;
+  private Median kioskMedian;
 
   public Communication(SocketChannel socketChannel) {
+    this.boothMedian = new Median(5);
+    this.kioskMedian = new Median(5);
     this.socketChannel = socketChannel;
     this.charset = null;
     receive();
@@ -73,8 +77,25 @@ public class Communication {
          log("서비스 등록결과 : " + jsonObject.get("response"));
           break;
 
-        case "booth":
-         log("booth : " + jsonObject.get("smoke"));
+        case "median":
+         if (jsonObject.get("service").equals("booth")) {
+           boothMedian.setValue(Integer.parseInt(jsonObject.get("value").toString()));
+
+           if (boothMedian.isMedian()) {
+             System.out.println("부스 중앙값 > " + boothMedian.getMedian());
+           } else {
+             System.out.println("부스값 센싱중...");
+           }
+
+         } else {
+           kioskMedian.setValue(Integer.parseInt(jsonObject.get("value").toString()));
+
+           if (kioskMedian.isMedian()) {
+             System.out.println("키오스크 중앙값 > " + kioskMedian.getMedian());
+           } else {
+             System.out.println("키오스크 센싱중...");
+           }
+         }
           break;
 
         case "kiosk":
@@ -82,7 +103,8 @@ public class Communication {
           break;
 
         default:
-          log(code);
+          log("알려지지 않은 데이터가 접속하였습니다");
+          log(msg);
       }
 
     } catch (ParseException e) {
