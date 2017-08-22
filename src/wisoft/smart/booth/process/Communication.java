@@ -3,6 +3,7 @@ package wisoft.smart.booth.process;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -11,7 +12,7 @@ import java.nio.charset.Charset;
 public class Communication {
   private SocketChannel socketChannel;
   private Charset charset;
-  private  Median boothMedian;
+  private Median boothMedian;
   private Median kioskMedian;
 
   public Communication(SocketChannel socketChannel) {
@@ -74,28 +75,34 @@ public class Communication {
 
       switch (code) {
         case "register":
-         log("서비스 등록결과 : " + jsonObject.get("response"));
+          log("서비스 등록결과 : " + jsonObject.get("response"));
           break;
 
         case "median":
-         if (jsonObject.get("service").equals("booth")) {
-           boothMedian.setValue(Integer.parseInt(jsonObject.get("value").toString()));
+          if (jsonObject.get("device").equals("booth")) {
+            boothMedian.setValue(Integer.parseInt(jsonObject.get("value").toString()));
 
-           if (boothMedian.isMedian()) {
-             System.out.println("부스 중앙값 > " + boothMedian.getMedian());
-           } else {
-             System.out.println("부스값 센싱중...");
-           }
+            JSONObject boothJson = new JSONObject();
+            boothJson.put("code", "median");
+            boothJson.put("device", "booth");
 
-         } else {
-           kioskMedian.setValue(Integer.parseInt(jsonObject.get("value").toString()));
+            if (boothMedian.isMedian()) {
+              boothJson.put("value", String.valueOf(boothMedian.getMedian()));
+              send(boothJson.toJSONString());
+            } else { System.out.println("부스값 센싱중.."); }
 
-           if (kioskMedian.isMedian()) {
-             System.out.println("키오스크 중앙값 > " + kioskMedian.getMedian());
-           } else {
-             System.out.println("키오스크 센싱중...");
-           }
-         }
+          } else {
+            kioskMedian.setValue(Integer.parseInt(jsonObject.get("value").toString()));
+
+            JSONObject kioskJson = new JSONObject();
+            kioskJson.put("code", "median");
+            kioskJson.put("device", "kiosk");
+
+            if (kioskMedian.isMedian()) {
+              kioskJson.put("value", String.valueOf(kioskMedian.getMedian()));
+              send(kioskJson.toJSONString());
+            } else { System.out.println("키오스크 센싱중..."); }
+          }
           break;
 
         case "kiosk":

@@ -20,7 +20,6 @@ public class Central {
     json.put(key, value);
     json.put("service", "process");
     communication = new Communication(setting.getSocketChannel());
-    String serviceRegister = json.toJSONString();
-    communication.send(serviceRegister);
+    communication.send(json.toJSONString());
   }
 }
