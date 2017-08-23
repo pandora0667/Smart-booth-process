@@ -1,9 +1,5 @@
 package wisoft.smart.booth.process;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -14,11 +10,13 @@ public class Communication {
   private Charset charset;
   private Median boothMedian;
   private Median kioskMedian;
+  private Json json;
 
   public Communication(SocketChannel socketChannel) {
     this.boothMedian = new Median(5);
     this.kioskMedian = new Median(5);
     this.socketChannel = socketChannel;
+    this.json = new Json();
     this.charset = null;
     receive();
   }
@@ -68,54 +66,31 @@ public class Communication {
   }
 
   private void serviceCode(String msg) {
-    try {
-      JSONParser jsonParser = new JSONParser();
-      JSONObject jsonObject = (JSONObject) jsonParser.parse(msg);
-      String code = jsonObject.get("code").toString();
 
-      switch (code) {
-        case "register":
-          log("서비스 등록결과 : " + jsonObject.get("response"));
+    switch (json.getValue(msg, "code")) {
+
+      case "register":
+        log("서비스 등록결과 : " + json.getValue(msg, "response"));
+        break;
+
+      case "median":
+        if (json.getValue(msg, "device").equals("booth")) {
+          boothMedian.setValue(json.getValue(msg, "value"));
+          send(json.createMedian("device", "booth", boothMedian.getMedian()));
           break;
+        }
 
-        case "median":
-          if (jsonObject.get("device").equals("booth")) {
-            boothMedian.setValue(Integer.parseInt(jsonObject.get("value").toString()));
+        kioskMedian.setValue(json.getValue(msg, "value"));
+        send(json.createMedian("device", "kiosk", kioskMedian.getMedian()));
+        break;
 
-            JSONObject boothJson = new JSONObject();
-            boothJson.put("code", "median");
-            boothJson.put("device", "booth");
+      case "error":
+        log("라우터에서 하가(등록)되지 않는 디바이스가 접근했습니다.");
+        break;
 
-            if (boothMedian.isMedian()) {
-              boothJson.put("value", String.valueOf(boothMedian.getMedian()));
-              send(boothJson.toJSONString());
-            } else { System.out.println("부스값 센싱중.."); }
-
-          } else {
-            kioskMedian.setValue(Integer.parseInt(jsonObject.get("value").toString()));
-
-            JSONObject kioskJson = new JSONObject();
-            kioskJson.put("code", "median");
-            kioskJson.put("device", "kiosk");
-
-            if (kioskMedian.isMedian()) {
-              kioskJson.put("value", String.valueOf(kioskMedian.getMedian()));
-              send(kioskJson.toJSONString());
-            } else { System.out.println("키오스크 센싱중..."); }
-          }
-          break;
-
-        case "kiosk":
-          log("kiosk : " + jsonObject.get("smoking"));
-          break;
-
-        default:
-          log("알려지지 않은 데이터가 접속하였습니다");
-          log(msg);
-      }
-
-    } catch (ParseException e) {
-      e.printStackTrace();
+      default:
+        log("알려지지 않은 데이터가 수신되었습니다");
+        log(msg);
     }
   }
 
