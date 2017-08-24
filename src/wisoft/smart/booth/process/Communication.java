@@ -11,12 +11,16 @@ public class Communication {
   private Median boothMedian;
   private Median kioskMedian;
   private Json json;
+  private DatabaseInsertService insertService;
+  private DatabaseSelectService selectService;
 
   public Communication(SocketChannel socketChannel) {
     this.boothMedian = new Median(5);
     this.kioskMedian = new Median(5);
     this.socketChannel = socketChannel;
     this.json = new Json();
+    this.insertService = new DatabaseInsertService();
+    this.selectService = new DatabaseSelectService();
     this.charset = null;
     receive();
   }
@@ -66,14 +70,13 @@ public class Communication {
   }
 
   private void serviceCode(String msg) {
-
     switch (json.getValue(msg, "code")) {
 
-      case "register":
+      case "register":  // 라우터 등록
         log("서비스 등록결과 : " + json.getValue(msg, "response"));
         break;
 
-      case "median":
+      case "median":  // 중앙값 처리
         if (json.getValue(msg, "device").equals("booth")) {
           boothMedian.setValue(json.getValue(msg, "value"));
           send(json.createMedian("device", "booth", boothMedian.getMedian()));
@@ -82,6 +85,17 @@ public class Communication {
 
         kioskMedian.setValue(json.getValue(msg, "value"));
         send(json.createMedian("device", "kiosk", kioskMedian.getMedian()));
+        break;
+
+      case "login": // 로그인 확인
+        if (selectService.accountVerification("", "")) {
+          log("로그인 요청이 성공했습니다.");
+        }
+        break;
+
+      case "sign": // 회원가입 요청시 DB 저장
+        int retValue = insertService.account("", "", "", "");
+        log(retValue + " 건의 사항이 처리되었습니다.");
         break;
 
       case "error":
