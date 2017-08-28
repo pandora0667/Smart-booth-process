@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DatabaseInsertService {
-  public int account(String username, String password, String email, String tel) {
+  public String account(String username, String password, String email, String tel) {
 
     String query = "INSERT INTO account(username, password, email, phone) VALUES(?, ?, ?, ?)";
 
@@ -20,12 +20,12 @@ public class DatabaseInsertService {
       int retValue = ps.executeUpdate();
       connection.commit();
 
-      return retValue;
+      return String.valueOf(retValue);
 
     } catch (SQLException e) {
       log("SQLException : " + e.getMessage());
       log("SQLState : " + e.getSQLState());
-      return -1;
+      return null;
     }
   }
 

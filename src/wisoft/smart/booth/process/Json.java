@@ -18,14 +18,22 @@ public class Json {
     }
   }
 
-  public String createMedian(String key, String value, String median) {
+  public String getMedian(String key, String value, String median) {
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("code", "median");
     jsonObject.put(key, value);
     jsonObject.put("value", median);
 
     return jsonObject.toJSONString();
+  }
 
+  public String getAccount(String code, String service, String status) {
+    JSONObject jsonObject = new JSONObject();
+    jsonObject.put("code", code);
+    jsonObject.put("service", service);
+    jsonObject.put("status", status);
+
+    return  jsonObject.toJSONString();
   }
 }
 

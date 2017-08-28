@@ -79,24 +79,31 @@ public class Communication {
       case "median":  // 중앙값 처리
         if (json.getValue(msg, "device").equals("booth")) {
           boothMedian.setValue(json.getValue(msg, "value"));
-          send(json.createMedian("device", "booth", boothMedian.getMedian()));
+          send(json.getMedian("device", "booth", boothMedian.getMedian()));
           break;
         }
 
         kioskMedian.setValue(json.getValue(msg, "value"));
-        send(json.createMedian("device", "kiosk", kioskMedian.getMedian()));
+        send(json.getMedian("device", "kiosk", kioskMedian.getMedian()));
         break;
 
       case "login": // 로그인 확인
-        if (selectService.accountVerification("", "")) {
+        if (selectService.accountVerification(json.getValue(msg, "username"), json.getValue(msg, "password"))) {
           log("로그인 요청이 성공했습니다.");
+          send(json.getAccount("result", "login", "true"));
+          break;
         }
+        send(json.getAccount("result", "login", "false"));
         break;
 
       case "sign": // 회원가입 요청시 DB 저장
-        int retValue = insertService.account("", "", "", "");
-        log(retValue + " 건의 사항이 처리되었습니다.");
-        break;
+        String retValue = insertService.account(json.getValue(msg, "username"), json.getValue(msg, "password"), json.getValue(msg, "email"), json.getValue(msg, "tel"));
+        if (retValue != null) {
+          log(retValue + " 건의 사항이 처리되었습니다.");
+          send(json.getAccount("result", "sign",  retValue));
+          break;
+        }
+        send(json.getAccount("result", "sign", "false"));
 
       case "error":
         log("라우터에서 하가(등록)되지 않는 디바이스가 접근했습니다.");
