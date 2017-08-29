@@ -109,6 +109,7 @@ public class Communication {
         log("라우터에서 하가(등록)되지 않는 디바이스가 접근했습니다.");
         break;
 
+        //TODO File 설정 (특정 다렉토리에 있는 파일 검색후 데이터베이스에 저장 및 전송
       default:
         log("알려지지 않은 데이터가 수신되었습니다");
         log(msg);
