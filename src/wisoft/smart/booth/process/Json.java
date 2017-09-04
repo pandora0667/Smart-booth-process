@@ -13,6 +13,7 @@ public class Json {
       return codeJson.get(key).toString();
 
     } catch (ParseException e) {
+      System.out.println(e);
       System.out.println("JSON Parsing failed..");
       return null;
     }

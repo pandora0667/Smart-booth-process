@@ -1,7 +1,7 @@
 package wisoft.smart.booth.process;
 
 public class Main {
-  private final static String ip = "203.230.100.177";
+  private final static String ip = "jusk2.asuscomm.com";
   private final static int port = 5001;
 
   public static void main(String[] args) {
