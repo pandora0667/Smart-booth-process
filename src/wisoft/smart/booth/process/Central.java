@@ -22,4 +22,6 @@ public class Central {
     communication = new Communication(setting.getSocketChannel());
     communication.send(json.toJSONString());
   }
+
+
 }

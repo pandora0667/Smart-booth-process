@@ -22,6 +22,7 @@ public class DatabaseAccess {
 
     try {
       connection = DriverManager.getConnection(url, username, password);
+      System.out.println("    ----- DATABASE ACCESS!!");
     } catch (SQLException e) {
       System.out.println("데이터 베이스 접속에 실패했습니다.");
       System.out.println("Error : " + e);
