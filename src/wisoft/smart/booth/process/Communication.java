@@ -70,6 +70,7 @@ public class Communication {
   }
 
   private void serviceCode(String msg) {
+    log(msg);
     switch (json.getValue(msg, "code")) {
 
       case "register":  // 라우터 등록
