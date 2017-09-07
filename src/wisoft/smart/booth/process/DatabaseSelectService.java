@@ -8,22 +8,24 @@ import java.sql.SQLException;
 public class DatabaseSelectService {
 
   public boolean accountVerification(String username, String password) {
-   String query = "SELECT password FROM account WHERE username = ?";
+    String query = "SELECT password FROM account WHERE username = ?";
 
-   try (Connection connection = DatabaseAccess.setConnection();
-        PreparedStatement ps = connection.prepareStatement(query)) {
+    try (Connection connection = DatabaseAccess.setConnection();
+         PreparedStatement ps = connection.prepareStatement(query)) {
 
-     connection.setAutoCommit(false);
-     ps.setString(1, username);
-     try (ResultSet rs = ps.executeQuery()) {
-       rs.next();
-       return password.equals(rs.getString(1));
-     }
-   } catch (SQLException e) {
-     log("SQLException : " + e.getMessage());
-     log("SQLState : " + e.getSQLState());
-     return false;
-   }
+      connection.setAutoCommit(false);
+      ps.setString(1, username);
+      try (ResultSet rs = ps.executeQuery()) {
+        if (rs.next())
+          return password.equals(rs.getString(1));
+        else
+          return false;
+      }
+    } catch (SQLException e) {
+      log("SQLException : " + e.getMessage());
+      log("SQLState : " + e.getSQLState());
+      return false;
+    }
   }
 
   private void log(String str) {

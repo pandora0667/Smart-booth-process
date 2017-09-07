@@ -104,6 +104,7 @@ public class Communication {
           break;
         }
         send(json.getAccount("result", "sign", "false"));
+        break;
 
       case "error":
         log("라우터에서 하가(등록)되지 않는 디바이스가 접근했습니다.");
