@@ -29,7 +29,7 @@ public class Communication {
     Runnable runnable = () -> {
       while (true) {
         try {
-          ByteBuffer byteBuffer = ByteBuffer.allocate(100);
+          ByteBuffer byteBuffer = ByteBuffer.allocate(500);
           int isClose = socketChannel.read(byteBuffer);
           if (isClose == -1) {
             throw new Exception();
