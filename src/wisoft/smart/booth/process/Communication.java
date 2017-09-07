@@ -97,6 +97,11 @@ public class Communication {
         break;
 
       case "sign": // 회원가입 요청시 DB 저장
+        log(json.getValue(msg, "username"));
+        log(json.getValue(msg, "password"));
+        log(json.getValue(msg, "email"));
+        log(json.getValue(msg, "tel"));
+
         String retValue = insertService.account(json.getValue(msg, "username"), json.getValue(msg, "password"), json.getValue(msg, "email"), json.getValue(msg, "tel"));
         if (retValue != null) {
           log(retValue + " 건의 사항이 처리되었습니다.");
