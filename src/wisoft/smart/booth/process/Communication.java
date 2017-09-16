@@ -29,7 +29,7 @@ public class Communication {
     Runnable runnable = () -> {
       while (true) {
         try {
-          ByteBuffer byteBuffer = ByteBuffer.allocate(500);
+          ByteBuffer byteBuffer = ByteBuffer.allocate(1000);
           int isClose = socketChannel.read(byteBuffer);
           if (isClose == -1) {
             throw new Exception();
@@ -46,6 +46,7 @@ public class Communication {
 
         } catch (NullPointerException e) {
           log("비정상적인 오류가 발생했습니다.");
+          log("Error code : " + e);
           close();
 
         } catch (Exception e) {
