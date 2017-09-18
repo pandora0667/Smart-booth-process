@@ -42,12 +42,10 @@ public class Communication {
         } catch (IOException e) {
           log("데이터 수신중 다음과 같은 오류가 발생했습니다.");
           log("Error code : " + e);
-          close();
 
         } catch (NullPointerException e) {
           log("비정상적인 오류가 발생했습니다.");
           log("Error code : " + e);
-          close();
 
         } catch (Exception e) {
           log("라우터와 연결이 종료되어 서비스를 종료합니다.");
