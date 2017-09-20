@@ -14,7 +14,7 @@ public class Communication {
   private DatabaseInsertService insertService;
   private DatabaseSelectService selectService;
 
-  public Communication(SocketChannel socketChannel) {
+  public Communication(final SocketChannel socketChannel) {
     this.boothMedian = new Median(5);
     this.kioskMedian = new Median(5);
     this.socketChannel = socketChannel;
@@ -127,7 +127,7 @@ public class Communication {
     }
   }
 
-  private void log(String str) {
+  private void log(final String str) {
     System.out.println();
     System.out.println("**  " + str + "  **");
   }

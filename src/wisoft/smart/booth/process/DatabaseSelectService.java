@@ -7,8 +7,8 @@ import java.sql.SQLException;
 
 public class DatabaseSelectService {
 
-  public boolean accountVerification(String username, String password) {
-    String query = "SELECT password FROM account WHERE username = ?";
+  public boolean accountVerification(final String username, final String password) {
+    final String query = "SELECT password FROM account WHERE username = ?";
 
     try (Connection connection = DatabaseAccess.setConnection();
          PreparedStatement ps = connection.prepareStatement(query)) {

@@ -11,7 +11,7 @@ public class Setting {
     this.socketChannel = null;
   }
 
-  public boolean connectServer(String ip, int port) {
+  public boolean connectServer(final String ip, final int port) {
     try {
       socketChannel = SocketChannel.open();
       socketChannel.configureBlocking(true);
@@ -40,7 +40,7 @@ public class Setting {
     }
   }
 
-  private void log(String str) {
+  private void log(final String str) {
     System.out.println();
     System.out.println("**  " + str + "  **");
   }

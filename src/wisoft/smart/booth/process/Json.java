@@ -6,7 +6,7 @@ import org.json.simple.parser.ParseException;
 
 public class Json {
 
-  public String getValue(String msg, String key) {
+  public String getValue(final String msg, final String key) {
     try {
       JSONParser codeParser = new JSONParser();
       JSONObject codeJson = (JSONObject) codeParser.parse(msg);
@@ -19,7 +19,7 @@ public class Json {
     }
   }
 
-  public String getMedian(String key, String value, String median) {
+  public String getMedian(final String key, final String value, final String median) {
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("code", "median");
     jsonObject.put(key, value);
@@ -28,7 +28,7 @@ public class Json {
     return jsonObject.toJSONString();
   }
 
-  public String getAccount(String code, String service, String status) {
+  public String getAccount(final String code, final String service, final String status) {
     JSONObject jsonObject = new JSONObject();
     jsonObject.put("code", code);
     jsonObject.put("service", service);

@@ -16,9 +16,9 @@ public class DatabaseAccess {
   }
 
   public static Connection setConnection() {
-    String url = "jdbc:postgresql://192.168.0.67:5432/smart_booth";
-    String username = "space";
-    String password = "media";
+    final String url = "jdbc:postgresql://192.168.0.67:5432/smart_booth";
+    final String username = "space";
+    final String password = "media";
 
     try {
       connection = DriverManager.getConnection(url, username, password);

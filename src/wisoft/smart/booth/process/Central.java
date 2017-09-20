@@ -11,11 +11,11 @@ public class Central {
     this.setting = new Setting();
     this.communication = null;
   }
-  public boolean settingNetwork(String ip, int port) {
+  public boolean settingNetwork(final String ip, final int port) {
     return setting.connectServer(ip, port);
   }
 
-  public void registerRouter(String key, String value) {
+  public void registerRouter(final String key, final String value) {
     JSONObject json = new JSONObject();
     json.put(key, value);
     json.put("service", "process");

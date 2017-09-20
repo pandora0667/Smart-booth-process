@@ -5,9 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DatabaseInsertService {
-  public String account(String username, String password, String email, String tel) {
+  public String account(final String username, final String password, final String email, final String tel) {
 
-    String query = "INSERT INTO account(username, password, email, phone) VALUES(?, ?, ?, ?)";
+    final String query = "INSERT INTO account(username, password, email, phone) VALUES(?, ?, ?, ?)";
 
     try (Connection connection = DatabaseAccess.setConnection();
          PreparedStatement ps = connection.prepareStatement(query)) {

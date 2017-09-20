@@ -3,7 +3,7 @@ package wisoft.smart.booth.process;
 public class MedianSort {
   private int[] array;
 
-  public void setArray(int[] array) {
+  public void setArray(final int[] array) {
     this.array = array;
     selection();
   }
@@ -21,7 +21,7 @@ public class MedianSort {
     }
   }
 
-  private void swap(int[] array, int idx1, int idx2) {
+  private void swap(final int[] array, final int idx1, final int idx2) {
     int temp = array[idx1];
     array[idx1] = array[idx2];
     array[idx2] = temp;

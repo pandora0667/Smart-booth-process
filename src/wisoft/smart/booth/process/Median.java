@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class Median {
   private int median;
-  private int size;
+  private final int size;
   private int count;
-  private ArrayList<Integer> queue;
-  private MedianSort medianSort;
+  private final ArrayList<Integer> queue;
+  private final MedianSort medianSort;
 
-  public Median(int size) {
+  public Median(final int size) {
     this.median = 0;
     this.count = 0;
     this.size = size;
@@ -30,7 +30,7 @@ public class Median {
     return String.valueOf(median);
   }
 
-  private void medianCalculation(int [] array) {
+  private void medianCalculation(final int [] array) {
     median = array[((size+1)/2)-1];
   }
 
